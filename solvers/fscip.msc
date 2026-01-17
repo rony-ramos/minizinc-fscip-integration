@@ -1,0 +1,13 @@
+{
+  "id": "org.scip.fscip",
+  "name": "FiberSCIP (Parallel)",
+  "version": "1.0.0",
+  "executable": "A:\USIL CS\SCIP-env\fscip\fscip-wrapper.sh",
+  "tags": ["fscip", "cp", "int", "float", "linear", "mzn"],
+  "stdFlags": ["-a", "-p", "-s"],
+  "supportsMzn": false,
+  "supportsFzn": true,
+  "needsSolns2Out": true,
+  "isGUIApplication": false,
+  "mznlib": "A:\USIL CS\SCIP-env\fscip\fscip"
+}

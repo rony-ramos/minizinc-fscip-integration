@@ -1,0 +1,12 @@
+services:
+  scip-legacy-test:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    # image: scip10-test-env # Comentado para evitar errores de API check en algunas versiones de Docker
+    container_name: minizinc-fscip-integration
+    volumes:
+      - ./workspace:/workspace
+    tty: true
+    stdin_open: true # Equivalent to -it
+    command: /bin/bash
