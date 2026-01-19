@@ -22,6 +22,7 @@ RUN apt-get update && apt-get install -y \
   libreadline-dev \
   bison \
   flex \
+  python3 \
   && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /opt
@@ -42,7 +43,7 @@ RUN wget https://www.scipopt.org/download/release/scipoptsuite-10.0.0.tgz \
           -DLPS=spx \
           -DEXACTSOLVE=on \
           -DCMAKE_INSTALL_PREFIX=/usr/local \
-    && make -j8 \
+    && make \
     && make install \   
     # Verificación y copiado manual de binarios de FiberSCIP si CMake no los mueve
     && if [ -f "bin/fscip" ]; then cp bin/fscip /usr/local/bin/; fi \
@@ -56,9 +57,6 @@ ENV LD_LIBRARY_PATH="/usr/local/lib:${LD_LIBRARY_PATH}"
 # The source code is cloned to /opt/libminizinc for manual modification and compilation.
 RUN git clone https://github.com/MiniZinc/libminizinc.git /opt/libminizinc
 
-CMD ["/bin/bash"]
-
-
 RUN wget https://github.com/MiniZinc/MiniZincIDE/releases/download/2.9.4/MiniZincIDE-2.9.4-bundle-linux-x86_64.tgz \
     && tar -xf MiniZincIDE-2.9.4-bundle-linux-x86_64.tgz \
     && mv MiniZincIDE-2.9.4-bundle-linux-x86_64 /MiniZinc \
@@ -68,12 +66,11 @@ RUN wget https://github.com/MiniZinc/MiniZincIDE/releases/download/2.9.4/MiniZin
 ENV PATH="/MiniZinc/bin:$PATH"
 ENV LD_LIBRARY_PATH="/MiniZinc/lib:$LD_LIBRARY_PATH"
 
-# Configuration for MiniZinc to find SCIP
-
-
-
-
-
+# Configuration for MiniZinc to find fscip
+WORKDIR /opt/minizinc-fscip-integration
+COPY . .
+RUN chmod +x docker/install.sh wrapper/fscip-mzn.sh && \
+    ./docker/install.sh
 
 # Workspace for mounting logs/tests
 WORKDIR /workspace

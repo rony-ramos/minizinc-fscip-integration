@@ -44,6 +44,9 @@ fi
 touch $PARAMFILE
 touch $LOGFILE
 
+# Get script directory
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+
 # Run FiberSCIP
 /usr/local/bin/fscip $PARAMFILE $SRCPATH -sth $THREADS -fsol $SOLFILE -q >> $LOGFILE 2>&1
 RET=$?
@@ -51,7 +54,7 @@ RET=$?
 # Check if solution file exists and parse it
 if [ -f "$SOLFILE" ]; then
     # Pass SRCPATH (the .fzn file) to the normalizer script
-    /usr/bin/python3 /opt/libminizinc/normalize_fscip_sol.py "$SOLFILE" "$SRCPATH"
+    python3 "$SCRIPT_DIR/fscip-normalize.py" "$SOLFILE" "$SRCPATH"
     
     echo "----------"
     echo "=========="
