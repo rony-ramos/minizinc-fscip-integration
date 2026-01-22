@@ -1,0 +1,23 @@
+# Set default behavior, in case users don't have core.autocrlf set.
+* text=auto
+
+# Explicitly declare text files you want to always be normalized and converted
+# to native line endings on checkout.
+*.c text
+*.h text
+*.cpp text
+*.hpp text
+*.mzn text
+*.dzn text
+*.fzn text
+*.py text
+*.json text
+*.md text
+
+# Declare files that will always have CRLF line endings on checkout.
+*.sln text eol=crlf
+
+# Declare files that must always have LF line endings on checkout.
+# This is critical for shell scripts running in Docker from Windows mounts.
+*.sh text eol=lf
+*.py text eol=lf

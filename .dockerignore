@@ -1,0 +1,8 @@
+.git
+.gitignore
+.devcontainer
+workspace
+*.tgz
+*.tar.gz
+*.zip
+**/.DS_Store

@@ -23,6 +23,8 @@ RUN apt-get update && apt-get install -y \
   bison \
   flex \
   python3 \
+  python3-pip \
+  dos2unix \
   && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /opt
@@ -69,7 +71,12 @@ ENV LD_LIBRARY_PATH="/MiniZinc/lib:$LD_LIBRARY_PATH"
 # Configuration for MiniZinc to find fscip
 WORKDIR /opt/minizinc-fscip-integration
 COPY . .
-RUN chmod +x docker/install.sh wrapper/fscip-mzn.sh && \
+COPY docker/requirements.txt /tmp/requirements.txt
+RUN pip3 install --upgrade pip && \
+    pip3 install -r /tmp/requirements.txt
+
+RUN dos2unix docker/install.sh wrapper/fscip-mzn.sh wrapper/fscip-normalize.py && \
+    chmod +x docker/install.sh wrapper/fscip-mzn.sh wrapper/fscip-normalize.py && \
     ./docker/install.sh
 
 # Workspace for mounting logs/tests

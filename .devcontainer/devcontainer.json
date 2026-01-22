@@ -1,0 +1,16 @@
+{
+  "name": "MiniZinc & FiberSCIP Dev Container",
+  "dockerComposeFile": "../docker/docker-compose.yml",
+  "service": "minizinc-fscip",
+  "workspaceFolder": "/workspace",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "minizinc.minizinc",
+        "ms-python.python",
+        "ms-azuretools.vscode-docker"
+      ]
+    }
+  },
+  "remoteUser": "root"
+}

@@ -1,0 +1,11 @@
+# Core dependencies for MiniZinc Python integration
+minizinc>=0.9.0
+
+# Development tools (Formatting, Linting, Testing)
+black
+flake8
+mypy
+pytest
+
+# Data handling (Optional but recommended for data processing)
+numpy

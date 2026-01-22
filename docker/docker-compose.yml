@@ -7,6 +7,7 @@ services:
     container_name: minizinc-fscip-integration
     volumes:
       - ../workspace:/workspace
+      - ..:/opt/minizinc-fscip-integration # Hot-reload para desarrollo: cambios en .py/.sh se reflejan al instante
     tty: true
     stdin_open: true # Equivalent to -it
     command: /bin/bash
