@@ -2,13 +2,15 @@
 
 # Default values
 THREADS=1
+VERBOSE=0
 SRCPATH=""
 PARAMFILE="/tmp/fscip_params_$$.set"
+DEBUGPARAMFILE="/tmp/fscip_debug_params.set"
 SOLFILE="/tmp/fscip_sol_$$.txt"
-LOGFILE="/tmp/fscip_run_log.txt"
+LOGFILE="/tmp/fscip_run_log_$$.txt"
 
 # Cleanup
-trap "rm -f $PARAMFILE" EXIT
+trap "rm -f $PARAMFILE $LOGFILE" EXIT
 
 # Parse arguments
 args=()
@@ -19,6 +21,10 @@ while [[ $# -gt 0 ]]; do
             shift 2
             ;;
         -a|--all-solutions)
+            shift
+            ;;
+        -v|--verbose)
+            VERBOSE=1
             shift
             ;;
         -s|--statistics)
@@ -47,8 +53,22 @@ touch $LOGFILE
 # Get script directory
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 
-# Run FiberSCIP
-/usr/local/bin/fscip $PARAMFILE $SRCPATH -sth $THREADS -fsol $SOLFILE -q >> $LOGFILE 2>&1
+
+# Ensure log file exists
+touch $LOGFILE
+
+# Run FiberSCIP in background to capture PID
+/usr/local/bin/fscip $PARAMFILE $SRCPATH -sth $THREADS -fsol $SOLFILE -q >> $LOGFILE 2>&1 &
+FSCIP_PID=$!
+
+if [ "$VERBOSE" -eq 1 ]; then
+    # tail --pid follows the file until the process FSCIP_PID dies
+    # This ensures we see the log output until the very end
+    tail --pid=$FSCIP_PID -f "$LOGFILE" >&2
+fi
+
+# Wait for fscip to finish and capture exit code
+wait $FSCIP_PID
 RET=$?
 
 # Check if solution file exists and parse it

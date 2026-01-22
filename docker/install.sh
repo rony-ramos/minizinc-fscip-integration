@@ -26,7 +26,7 @@ cat <<EOF > "$MZN_SOLVER_PATH/fscip.msc"
   "version": "1.0.0",
   "executable": "$REPO_ROOT/wrapper/fscip-mzn.sh",
   "tags": ["fscip", "cp", "int", "float", "linear", "mzn"],
-  "stdFlags": ["-a", "-p", "-s"],
+  "stdFlags": ["-a", "-p", "-s", "-v"],
   "supportsMzn": false,
   "supportsFzn": true,
   "needsSolns2Out": true,
