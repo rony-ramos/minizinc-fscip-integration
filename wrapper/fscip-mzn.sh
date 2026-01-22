@@ -79,7 +79,7 @@ if [ -f "$SOLFILE" ]; then
     echo "----------"
     echo "=========="
     rm -f $SOLFILE
-    # rm -f $LOGFILE # Keep log for debugging if needed, or rely on tmp cleanup
+    rm -f $LOGFILE # Keep log for debugging if needed, or rely on tmp cleanup
 else
     # Check log for unsatisfiability
     if grep -q "problem is infeasible" $LOGFILE; then
